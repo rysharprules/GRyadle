@@ -1,3 +1,4 @@
 /.idea/
 **/.gradle/
-/gradle-build-tool-fundamentals/.gradle/
+/01-gradle-build-tool-fundamentals/.gradle/
+/01-gradle-build-java/build/

@@ -1,4 +1,13 @@
 /.idea/
 **/.gradle/
-/01-gradle-build-tool-fundamentals/.gradle/
-/01-gradle-build-java/build/
+/01-build=java/.gradle/
+/01-gradle-fundamentals/.gradle/
+/02-tasks/.gradle/
+**/build/
+/01-build-java/build/
+01-build-java/build/classes/java/main/Hello.class
+01-build-java/build/libs/01-gradle-build-java.jar
+01-build-java/build/libs/gradle-build-java.jar
+01-build-java/build/tmp/compileJava/compileTransaction/stash-dir/Hello.class.uniqueId0
+01-build-java/build/tmp/compileJava/previous-compilation-data.bin
+01-build-java/build/tmp/jar/MANIFEST.MF

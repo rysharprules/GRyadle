@@ -1,0 +1,15 @@
+task hello {
+    doFirst {
+        print 'Hello'
+    }
+}
+task world {
+    // run 'gradle world', and it will run the "hello" task first as that is a dependency
+    dependsOn hello
+    doFirst {
+        print ', W'
+    }
+    doLast {
+        print 'orld'
+    }
+}

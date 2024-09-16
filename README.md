@@ -8,16 +8,16 @@ Notes associated with learning Gradle
 [Gradle download page](https://gradle.org/releases/)
 
 ## Running Gradle for the First Time
-_See 01-gradle-build-tool-fundamentals_
+_See 01-gradle-fundamentals_
 
 To run the "hello" Groovy build file:
 
 ```
-cd 01-gradle-build-tool-fundamentals
+cd 01-gradle-fundamentals
 gradle hello
 ```
 
-For Kotlin alternative, `cd 01-gradle-build-tool-fundamentals/kotlin`
+For Kotlin alternative, `cd 01-gradle-fundamentals/kotlin`
 
 ## Tasks
 
@@ -26,20 +26,42 @@ To see a list of Gradle tasks
 gradle tasks
 ```
 
+### Phases
+
+1. Initialization
+2. Configuration
+3. Execution
+
+#### Execution Phase
+
+- dependsOn - Dependency which must run before
+- doFirst
+- doLast
+
 ## Plugins
 
-### Java plugin
-_See 01-gradle-build-java_
+Extend project's capabilities
 
+### Java plugin
+_See 01-build-java_
+
+This is built in.
+
+Groovy
 ```
 apply plugin: 'java'
 ```
-or
+Groovy (preferred)
 ```
 plugins {
     id 'java'
 }
 ```
+Kotlin
+```
+plugins { java }
+```
+
 You can run this with
 ```
 gradle build
@@ -53,6 +75,17 @@ Demo can be run with
 ```
 java -cp build\classes\java\main Hello
 ```
+
+### Community plugin
+
+Use fully qualified name and a version.
+```
+plugins {
+    id 'java'
+    id 'org.flywaydb.flyway' version '6.3.2'
+}
+```
+Run `gradle tasks` to see tasks that added plugins provide.
 
 ## Resources
 

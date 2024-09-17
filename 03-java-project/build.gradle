@@ -1,0 +1,11 @@
+plugins {
+    id 'application'
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    // Additional to the standard build file there are options to create additional JARs. These can be renamed to .zip to view contents
+    withJavadocJar() // This will add a build/libs/03-java-project-1.0-SNAPSHOT-javadoc.jar file including JavaDocs documentation
+    withSourcesJar() // This will add a build/libs/03-java-project-1.0-SNAPSHOT-sources.jar file for the source code
+}
+mainClassName = 'Hello'
+version = '1.0-SNAPSHOT' // This will be included in final .jar name (03-java-project-1.0-SNAPSHOT.jar)

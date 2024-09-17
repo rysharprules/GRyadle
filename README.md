@@ -87,6 +87,63 @@ plugins {
 ```
 Run `gradle tasks` to see tasks that added plugins provide.
 
+## Java projects
+
+The Java plugins expect to find the source code in a standard location.
+
+Standard code layout example:
+```
+    src
+        main
+            java
+            kotlin
+            resources
+        test
+            java
+            kotlin
+            resources
+```
+This can be changed using SourceSets:
+```Groovy DSL
+sourceSets {
+    main {
+        java  {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
+    }
+}
+```
+
+### application plugin
+_See 03-java-project_
+
+This is derived from the `java` plugin. It includes a task named `run`. To use this, we need to tell Gradle what the main
+class name is (the class which contains a runnable `main` method):
+
+`mainClassName = 'com.gryadle.security.Hash'`
+
+Run it with:
+```
+cd 03-java-project
+gradle run
+```
+
+### Version
+_See 03-java-project_
+
+You can set the Java source version with:
+
+```Groovy DSL
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+```
+
+You can also set target compatibility with `targetCompatibility`. If you do not set this, it will automatically take the source compatibility value.
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)

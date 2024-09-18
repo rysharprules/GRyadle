@@ -144,6 +144,9 @@ java {
 
 You can also set target compatibility with `targetCompatibility`. If you do not set this, it will automatically take the source compatibility value.
 
+## Kotlin projects
+_See 03-kotlin-project_
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)

@@ -147,6 +147,54 @@ You can also set target compatibility with `targetCompatibility`. If you do not 
 ## Kotlin projects
 _See 03-kotlin-project_
 
+## Dependencies
+
+We can add dependencies with the `dependencies` block
+```
+dependencies {
+    implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    testImplemtation 'junit:junit:4.12'
+}
+```
+
+can be satisfied from:
+
+**Other projects**
+
+**File system**
+Specify with `files` in `dependencies` block
+```
+    dependencies {
+        implementation files ('lib/log4j-1.2.8.jar', 'lib/jaxb-api-2.3.1.jar')
+        testImplementation files ('lib/junit-3.8.1.jar')
+    }
+```
+or alternatively specify the file directory within the `repositories` block
+```
+    repositories {
+        flatDir {
+            dirs 'lib'
+        }
+    }
+```
+**Maven repositories**
+
+**Ivy repositories**
+
+Configurations:
+- Compilation
+- Runtime
+- Test compilation
+- Test runtime
+
+We can list all dependencies or via configuration
+```
+gradle -q dependencies
+gradle -q dependencies --configuration implementation
+```
+(`-q` means quiet)
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)

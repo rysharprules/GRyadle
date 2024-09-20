@@ -160,9 +160,8 @@ dependencies {
 
 can be satisfied from:
 
-**Other projects**
-
-**File system**
+1. Other projects
+2. File system
 Specify with `files` in `dependencies` block
 ```
     dependencies {
@@ -178,15 +177,52 @@ or alternatively specify the file directory within the `repositories` block
         }
     }
 ```
-**Maven repositories**
+3. Maven repositories
 
-**Ivy repositories**
+local
+```
+repositories {
+    mavenLocal()
+}
+```
 
-Configurations:
-- Compilation
-- Runtime
-- Test compilation
-- Test runtime
+custom
+```
+repositories {
+    maven {
+        url "http://repo.mycompany.com/maven2"
+    }
+}
+```
+
+4. Ivy repositories
+
+```
+repositories {
+    ivy {
+        url "http://repo.mycompany.com/repo"
+    }
+}
+```
+
+5. Multiple
+
+```
+repositories {
+    maven {
+        url "http://repo.mycompany.com/maven2"
+    }
+    ivy {
+        url "http://repo.mycompany.com/repo"
+    }
+}
+```
+
+### Configuration (scopes):
+- Compilation `compileOnly` (implementation)
+- Runtime `runtimeOnly` (implementation)
+- Test compilation `testCompileOnly` (testImplementation)
+- Test runtime `testRuntimeOnly` (testImplementation)
 
 We can list all dependencies or via configuration
 ```
@@ -194,6 +230,37 @@ gradle -q dependencies
 gradle -q dependencies --configuration implementation
 ```
 (`-q` means quiet)
+
+### Properties
+
+You can store variables in a properties file:
+
+gradle.properties
+```
+junit_version = 3.8.1
+```
+
+build.gradle.kts
+```
+val junit_version: String by project
+
+dependencies {
+    testImplementation("junit:junit:$junit_version")
+}
+```
+
+build.gradle
+```
+buildscript {
+    ext {
+        junit_version = 3.8.1
+    }
+}
+
+dependencies {
+    testImplementation "junit:junit:$junit_version"
+}
+```
 
 ## Resources
 

@@ -262,6 +262,41 @@ dependencies {
 }
 ```
 
+## Multi-project build
+
+settings.gradle
+```
+include 'Repository', 'JacketService'
+```
+
+build.gradle
+```
+allprojects {
+    apply plugin: 'java'
+}
+version = '1.0.SNAPSHOT'
+project(':Repository'){}
+project(':JacketService'){
+    dependencies {
+        implementation project(':Repository')
+    }
+}
+```
+
+build.gradle.kts
+```
+allprojects {
+    apply(plugin="java")
+    version = "1.0.SNAPSHOT"
+}
+project(":Repository"){}
+project(":JacketService"){
+    dependencies {
+        "implementation"(project(":Repository")
+    }
+}
+```
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)

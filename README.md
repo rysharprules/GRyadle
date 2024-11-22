@@ -131,6 +131,18 @@ cd 03-java-project
 gradle run
 ```
 
+### library plugin
+
+```
+apply plugin: 'java-library'
+
+dependencies {
+    api 'org.apache.httpcomponents:httpcore:4.4.13'
+}
+```
+
+`api` exposes the dependency to any project that uses that library, e.g. within a multi-project
+
 ### Version
 _See 03-java-project_
 
@@ -264,7 +276,9 @@ dependencies {
 
 ## Multi-project build
 
-settings.gradle
+### Example 1:
+
+settings.gradle (top level directory)
 ```
 include 'Repository', 'JacketService'
 ```
@@ -283,7 +297,9 @@ project(':JacketService'){
 }
 ```
 
-build.gradle.kts
+`allprojects` applies for all projects while `project(...){}` is specific.
+
+build.gradle.kts (alternative)
 ```
 allprojects {
     apply(plugin="java")
@@ -296,6 +312,135 @@ project(":JacketService"){
     }
 }
 ```
+
+### Example 2:
+
+build.gradle
+```
+buildscript {
+    ext {
+        hamcrest_version = '1.3'
+        commonslogging_version = '1.2'
+        flyway_version = '6.3.1'
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.h2database:h2:1.4.187'
+    }
+}
+
+plugins {
+    id "org.flywaydb.flyway" version "${flyway_version}" apply false
+    id 'java'
+}
+
+subprojects {
+    apply plugin: 'java'
+    
+    version = '0.1-SNAPSHOT'
+    
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    
+    repositories {
+        jcenter()
+    }
+    
+    dependences {
+        testImplementation "org.hamcrest:hamcrest-core:${hamcrest_version}"
+        testImplementation 'junit:junit:4.2'
+        testImplementation "org.hamcrest:hamcrest-library:${hamcrest_version}"
+        testImplementation 'org.mockito:mockito-core:1.9.+'
+        
+        implementation "commons-logging:commons-logging:${commonslogging_version}"
+}
+
+project(':Repository') {
+    dependencies {
+    }
+}
+
+project(':HibernateRepository') {
+    dependencies {
+        implementation project(':Repository')
+    }
+}
+
+project(':JacketRepository') {
+    dependencies {
+        implementation project(':HibernateRepository'), project(':Repository')
+    }
+}
+
+project(':JacketService') {
+    dependencies {
+        implementation project(':JacketRepository'), project(':Repository')
+    }
+}
+
+project(':JacketWeb') {
+    dependencies {
+        implementation project(':JacketService')
+    }
+}
+
+["JacketRepository", "JacketService", "JacketWeb"].each { name ->
+    project(":$name") {
+        apply plugin: 'org.flywaydb.flyway'
+        
+        task migrateTest {
+            group = "test"
+            description = "Run migration test scripts"
+            doFirst {
+                flyway {
+                    url = 'jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false'
+                    user = 'sa'
+                    password = ''
+                    schemas = ['jacket']
+                    locations = ["filesystem:${rootProject.projectDir}/migrations/common", ...]
+                    sqlMigrationPrefix = ""
+                    baselineOnMigrate = true
+                    outOfOrder = true
+                }
+            } 
+        }
+    }
+}
+```
+
+Set versions in `ext` block. These versions can be picked up in sub-builds using reference `${..._version}`.
+
+Within the `plugins` block, `apply false` means we do not wish to apply the plugin here as we want to apply it on a per-project basis.
+```
+plugins {
+    id "org.flywaydb.flyway" version "${flyway_version}" apply false
+```
+
+`subprojects` block is similar to `allprojects` block but only for subprojects.
+
+You can also configure per project with `project(...)`.
+
+Finally, you can also configure groups of projects using:
+
+```
+["JacketRepository", "JacketService", "JacketWeb"].each { name ->
+    project(":$name") {
+        ...
+```
+
+This loops through each project and applies the configuration. Note the variable set for the iteration here is `name`.
+
+#### Kotlin differences
+
+Other than syntax which we've covered, the Kotlin version of this example there are some differences to note:
+
+- Values are set with `val h2_version: String by project`. Be wary of scoping.
+- Within the `plugins` block, the versions need to be hardcoded, e.g. `id("org.flywaydb.flyway") version "6.3.1"`
+- Configuration of multiple groups can be achieved with `listOf("JacketRepository", "JacketService", "JacketWeb").forEach { name ->`
 
 ## Resources
 

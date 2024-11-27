@@ -442,6 +442,35 @@ Other than syntax which we've covered, the Kotlin version of this example there 
 - Within the `plugins` block, the versions need to be hardcoded, e.g. `id("org.flywaydb.flyway") version "6.3.1"`
 - Configuration of multiple groups can be achieved with `listOf("JacketRepository", "JacketService", "JacketWeb").forEach { name ->`
 
+## Testing
+
+By default looks for unit tests in
+
+`src/test/java`
+
+and outputs to
+
+`build/classes/test`
+
+### jUnit5
+
+To configure JUnit5, add `use jUnitPlatform` to configure jUnit5
+
+```
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+}
+```
+
+Use `testImplementation` to define test dependencies (in `dependencies` block)
+
+```
+testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+```
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)

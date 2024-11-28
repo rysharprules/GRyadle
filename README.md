@@ -471,6 +471,49 @@ testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
 testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
 ```
 
+## Gradle Wrapper
+
+- Gives the project a specific version of Gradle
+- Get consistent builds
+- `gradlew.bat` on Windows
+- `greadlew` shell script on *nix environments
+- Can be used with CICD/build server
+
+To add the wrapper to your project:
+
+```
+gradle wrapper
+```
+
+This creates a Gradle folder in your project directory:
+
+```Project directory
+Project
+    .gradle
+    gradle
+        wrapper
+            gradle-wrapper.jar
+            gradle-wrapper.properties
+    lib
+    src
+    test
+    build.gradle.kts
+    gradle.properties
+    gradlew
+    gradlew.bat
+```
+
+gradle-wrapper.properties sets the Gradle version:
+```
+distributionUrl=https://services.gradle.org/distributions/gradle-6.3-bin.zip
+```
+
+If you run `gradle build --console plain`, the console will show `executing gradlew instead of gradle` and will download 
+the wrapper from the distribution set in the properties above before doing the build. The wrapper is stored and will not
+be downloaded next time.
+
+If you want to set the version you can with `gradle wrapper --gradle-version 6.2`. This will also update the property value.
+
 ## Resources
 
 [Gradle 7 Build Tool Fundamentals](https://app.pluralsight.com/library/courses/gradle-build-tool-fundamentals/table-of-contents)
